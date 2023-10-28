@@ -1,13 +1,15 @@
-export default function Register() {
+import React from "react";
+
+export default function Logout({ userState, dispatchUser }) {
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <label htmlFor="register-username">Username:</label>
-      <input type="text" name="register-username" id="register-username" />
-      <label htmlFor="register-password">Password:</label>
-      <input type="password" name="register-password" id="register-password" />
-      <label htmlFor="register-password-repeat">Repeat password:</label>
-      <input type="password" name="register-password-repeat" id="register-password-repeat" />
-      <input type="submit" value="Register" />
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        dispatchUser({ type: "LOGOUT" });
+      }}
+    >
+      Logged in as: <b>{userState.username}</b>
+      <input type="submit" value="Logout" />
     </form>
   );
 }
