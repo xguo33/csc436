@@ -43,8 +43,16 @@ export const initialUserState = {
           }
           return todo;
         });
+     
+    case 'DELETE_TODO':
+      // 处理 DELETE_TODO 操作的逻辑
+      const filteredTodos = state.todos.filter((todo) => todo.id !== action.id);
+      return {
+        ...state,
+        todos: filteredTodos,
+      }; 
       default:
-        return state;
+      return state;
     }
   }
   
