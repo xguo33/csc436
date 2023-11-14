@@ -1,5 +1,6 @@
 
 export default function Todo({
+  id,
   title,
   description,
   author,
@@ -7,54 +8,16 @@ export default function Todo({
   complete,
   dateCompleted,
   onToggleComplete,
-  onDeleteTodo
-}) {
-  if (!title) {
-    return null;
-  }
-  
-  /*const handleToggleComplete =() => {
-	  onToggleComplete();
-  }
-  
-    const handleDeleteTodo =() => {
-	  onDeleteTodo();
-  }*/
-  
-  /*
-  const handleToggleComplete = () => {
-    const updatedComplete = !complete;
-    const updatedDateCompleted = updatedComplete ? Date.now() : null;
-
-    onToggleComplete(updatedComplete,updatedDateCompleted);
-  };
-
+  onDeleteTodo}) {
 
   return (
     <div>
       <h3>{title}</h3>
       <div>{description}</div>
       <br />
-      <i>Written by <b>{author}</b></i>
-      <p>Created: {new Date(dateCreated).toLocaleString()}</p>
-      <label htmlFor="completed-date"> Completed </label>
-      <input
-        type="checkbox"
-        checked={complete}
-        onChange={handleToggleComplete}
-      />
-      {complete && (
-        <i>{new Date(dateCompleted).toLocaleString()}</i>
-      )}
-      <p><button>Delete</button></p>
-    </div>
-  );*/
-  return (
-    <div>
-      <h3>{title}</h3>
-      <div>{description}</div>
-      <br />
-      <i>Written by <b>{author}</b></i>
+      <i>
+        Written by <b>{author}</b>
+      </i>
       <p>Created: {new Date(dateCreated).toLocaleString()}</p>
       <label htmlFor="completed-date"> Completed </label>
       <input
@@ -65,9 +28,8 @@ export default function Todo({
       {complete && (
         <i>{new Date(dateCompleted).toLocaleString()}</i>
       )}
-    <button onClick={onDeleteTodo}>Delete</button>
+    <button onClick={()=> onDeleteTodo()}>Delete</button>
 
     </div>
   );
-  
 }

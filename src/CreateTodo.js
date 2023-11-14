@@ -1,60 +1,60 @@
-import React, {useState} from "react";
-
-export default function CreateTodo ({user, todos, setTodos}) {
-
-
-  const [title, setTitle] = useState ('');
-    const [description, setDescription] = useState('');
-
-    const handleCreateTodo = 
-    () =>{
-        if (title){
-            const newTodo ={
-                title,
-                description,
-                author: user,
-                dateCreated: Date.now(),
-                complete: false,
-                dateCompleted:null,
-
-            };
-
-            setTodos([...todos,newTodo]);
-            setTitle('');
-            setDescription('');
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 
-        }else{
-            alert ('Please enter title')
-        }
+export default function CreateTodo({ user, handleAddTodo }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-    }
-    
-    return (
-        <div>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <div>Author: <b>{user}</b></div>
-            <div>
-              <label htmlFor="create-title">Title:</label>
-              <input
-                type="text"
-                name="create-title"
-                id="create-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="create-description">Description:</label>
-              <textarea
-                name="create-description"
-                id="create-description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-            <input type="submit" value="Create" onClick={handleCreateTodo} />
-          </form>
-        </div>
-      );
-    }
+  function handleTitle(evt) {
+    setTitle(evt.target.value);
+  }
+  function handleDescription(evt) {
+    setDescription(evt.target.value);
+  }
+  function handleCreate() {
+    if (title){
+      const newTodo ={
+          id:uuidv4(),
+          title,
+          description,
+          author: user,
+          dateCreated: Date.now(),
+          complete: false,
+          dateCompleted:null,
+
+      };
+
+      handleAddTodo(newTodo);
+
+
+  }else{
+      alert ('Please enter title')
+  }
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleCreate();
+      }}
+    >
+      <div>
+        Author: <b>{user}</b>
+      </div>
+      <div>
+        <label htmlFor="create-title">Title:</label>
+        <input
+          type="text"
+          value={title}
+          onChange={handleTitle}
+          name="create-title"
+          id="create-title"
+        />
+      </div>
+      <textarea value={description} onChange={handleDescription} />
+      <input type="submit" value="Create" />
+    </form>
+  );
+}

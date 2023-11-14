@@ -1,5 +1,13 @@
 .app {
   color: rgb(9, 9, 9);
-  background-color: rgb(146, 196, 171);
+  background-color: rgb(218, 234, 226);
   padding: 10px;
+}
+
+.userbar{
+  background-color: rgb(186, 226, 212);
+}
+
+.todo{
+  background-color: beige;
 }

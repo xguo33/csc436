@@ -1,19 +1,27 @@
-import Todo from './Todo';
-import React from 'react';
 
-export default function TodoList({ todos, setTodos, dispatchTodo, handleDeleteTodo,}) {
- const handleToggleComplete = (title) => {
-    dispatchTodo({ type: 'TOGGLE_TODO', title });
+import Todo from "./Todo";
+import { useContext } from "react";
+import { StateContext } from "./contexts";
+
+export default function TodoList({ todos = [] }) {
+  const { dispatch } = useContext(StateContext);
+
+  const handleToggleComplete = (id) => {
+    dispatch({ type: 'TOGGLE_TODO', id });
+  };
+
+  const handleDeleteTodo = (id) => {
+    dispatch({ type: 'DELETE_TODO', id });
   };
 
   return (
     <div>
-      {todos.map((todo, index) => (
+      {todos.map((todo) => (
         <Todo
-          key={`todo=${index}`}
+          key={todo.id}  
           {...todo}
-          onToggleComplete={() => handleToggleComplete(todo.title)}
-          onDeleteTodo={() => handleDeleteTodo(todo.title)}
+          onToggleComplete={() => handleToggleComplete(todo.id)}
+          onDeleteTodo={() => handleDeleteTodo(todo.id)}
         />
       ))}
     </div>

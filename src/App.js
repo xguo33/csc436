@@ -1,67 +1,69 @@
-import React, { useState, useReducer } from 'react';
-import { userReducer, initialUserState } from './reducer';
 import './App.css';
-import TodoList from './TodoList';
-import CreateTodo from './CreateTodo';
-import Login from './Login';
-import Register from './Register';
-import Logout from './Logout';
+import { useReducer, useEffect } from "react";
+import CreateTodo from "./CreateTodo";
+import UserBar from "./Userbar";
+import TodoList from "./TodoList";
+import { StateContext } from "./contexts";
+import appReducer from "./reducers";
+
+
 
 function App() {
-  const [todos, setTodos] = useState([]);
-  const [userState, dispatchUser] = useReducer(userReducer, initialUserState);
- // const [todoState, dispatchTodo] = useReducer(todoReducer, initialTodoState);
+  const initialTodos = [
+    {
+      title: "Lunch",
+      description: "The greatest thing since sliced bread!",
+      author: "Daniel Bugl",
+      dateCreated: Date.now(),
+      complete: false,
+      dateCompleted:null,
 
-  const handleCreateTodo = (newTodo) => {
-    setTodos([...todos, newTodo]);
-    dispatchUser({
-      type: 'CREATE_TODO',
-      title: newTodo.title,
-      description: newTodo.description,
-      author: newTodo.author,
-      dateCreated: newTodo.dateCreated,
-
-    });
-  };
-
-  const handleDeleteTodo = (title) => {
-    const updatedTodos = todos.filter((todo) => todo.title !== title);
-    setTodos(updatedTodos);
-  };
-
+    },
+    {
+      title: "Play",
+      description: "Play at playground!",
+      author: "Daniel Bugl",
+      dateCreated: Date.now(),
+      complete: true,
+      dateCompleted:Date.now(),
+    }
   
-  /*const handleCompleteTodo = (title, completed) => {
-    dispatchTodo({
-      type: 'COMPLETE_TODO',
-      title,
-      completed,
-    });
-  };*/
+  ];
 
+  const [state, dispatch] = useReducer(appReducer, {
+    user: "",
+    todos: initialTodos,
+  });
+
+  const { user, todos } = state;
+
+
+  useEffect(() => {
+    if (user) {
+      document.title = `${user}’s Todo`;
+    } else {
+      document.title = "Todo";
+    }
+  }, [user]);
+
+  const handleAddTodo = (newTodo) => {
+    dispatch({ type: "CREATE_TODO", ...newTodo });
+  };
 
 
 
   return (
-    <div className="app">
-      <h1>Lab3 Todo React App</h1>
-
-      <div className="user-auth-section">
-        <Login userState={userState} dispatchUser={dispatchUser} />
-        <Register userState={userState} dispatchUser={dispatchUser} />
-        <Logout userState={userState} dispatchUser={dispatchUser} />
-      </div>
-
-      <div className="Todo">
-        <TodoList
-          todos={todos}
-          setTodos={setTodos}
-          dispatchTodo={dispatchUser}
-          handleDeleteTodo={handleDeleteTodo}// 将handleDeleteTodo传递给TodoList
-          
-        />
-        <p></p>
-        <CreateTodo user={userState.username} onCreateTodo={handleCreateTodo} setTodos={setTodos} todos={todos} />
-      </div>
+      <div className="Todo app">
+      <h1>Lab4 {user}'s Todo React App</h1>
+      <StateContext.Provider value={{ state, dispatch }}> 
+   
+          <UserBar />
+    
+      <div className='todo'>
+          <CreateTodo user={user} handleAddTodo={handleAddTodo} />
+          <TodoList todos={todos} />
+      </div>   
+      </StateContext.Provider>
     </div>
   );
 }
