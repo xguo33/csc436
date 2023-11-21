@@ -1,0 +1,45 @@
+{
+    "users": [
+      {
+        "id": "1",
+        "username": "Daniel Bugl"
+      },
+      {
+        "id":"2",
+        "username":"test",
+        "password":"test"
+      }
+      
+    ],
+    "todos": [
+      {
+        "id": "1",
+        "title": "Lunch",
+        "description": "The greatest thing since sliced bread!",
+        "author": "Daniel Bugl",
+        "dateCreated": 1636761600000,
+        "complete": false,
+        "dateCompleted": null
+      },
+      {
+        "id": "2",
+        "title": "Play",
+        "description": "Play at playground!",
+        "author": "Daniel Bugl",
+        "dateCreated": 1636761600000,
+        "complete": true,
+        "dateCompleted": 1636761600000
+      },
+      {
+        "id":"3",
+        "title":"",
+        "description":"",
+        "author":"",
+        "dateCreated":"",
+        "complete":null,
+        "dateCompleted":""
+      }
+
+    ]
+  }
+  

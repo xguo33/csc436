@@ -2,9 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### open two termial 
+
+cd client
+`npm start` in client folder 
+
+cd server
+`json-server --watch db.json --port 4000` in server folder
 
 ### `npm start`
 

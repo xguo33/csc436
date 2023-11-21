@@ -1,10 +1,36 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import {useResource} from "react-request-hook";
+import { StateContext } from "./contexts";
 
-
-export default function CreateTodo({ user, handleAddTodo }) {
+export default function CreateTodo() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+ 
+  const {state, dispatch} = useContext(StateContext);
+  const {user} = state;
+
+  const [todo, createTodo] = useResource (({
+    id,
+    title,
+    description,
+    author,
+    dateCreated,
+    complete,
+    dateCompleted})=>({
+      url:"/todos",
+      method:"post",
+      data : { id,
+        title,
+        description,
+        author,
+        dateCreated,
+        complete,
+        dateCompleted}
+    }));
+
+
+
 
   function handleTitle(evt) {
     setTitle(evt.target.value);
@@ -24,8 +50,10 @@ export default function CreateTodo({ user, handleAddTodo }) {
           dateCompleted:null,
 
       };
+      createTodo(newTodo);
+      dispatch({type: "CREATE_TODO", ...newTodo});
 
-      handleAddTodo(newTodo);
+      //handleAddTodo(newTodo);
 
 
   }else{

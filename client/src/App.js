@@ -5,11 +5,12 @@ import UserBar from "./Userbar";
 import TodoList from "./TodoList";
 import { StateContext } from "./contexts";
 import appReducer from "./reducers";
+import { useResource } from 'react-request-hook';
 
 
 
 function App() {
-  const initialTodos = [
+ /*  const initialTodos = [
     {
       title: "Lunch",
       description: "The greatest thing since sliced bread!",
@@ -28,11 +29,26 @@ function App() {
       dateCompleted:Date.now(),
     }
   
-  ];
+  ]; */
+
+  const [todoResponse, getTodos] = useResource(()=>({
+    url: "/todos",
+    method:"get",
+  }));
+
+  useEffect(getTodos, []);
+
+  useEffect(() => {
+    if (todoResponse && todoResponse.data) {
+      dispatch({ type: "FETCH_TODOS", todos: todoResponse.data.reverse() });
+    }
+  }, [todoResponse]);
+
+
 
   const [state, dispatch] = useReducer(appReducer, {
     user: "",
-    todos: initialTodos,
+    todos: [],
   });
 
   const { user, todos } = state;
@@ -46,9 +62,9 @@ function App() {
     }
   }, [user]);
 
-  const handleAddTodo = (newTodo) => {
-    dispatch({ type: "CREATE_TODO", ...newTodo });
-  };
+  //const handleAddTodo = (newTodo) => {
+  //  dispatch({ type: "CREATE_TODO", ...newTodo });
+  //};
 
 
 
@@ -60,7 +76,7 @@ function App() {
           <UserBar />
     
       <div className='todo'>
-          <CreateTodo user={user} handleAddTodo={handleAddTodo} />
+          <CreateTodo />
           <TodoList todos={todos} />
       </div>   
       </StateContext.Provider>
