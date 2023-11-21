@@ -8,7 +8,6 @@ import appReducer from "./reducers";
 import { useResource } from 'react-request-hook';
 
 
-
 function App() {
  /*  const initialTodos = [
     {
@@ -31,18 +30,20 @@ function App() {
   
   ]; */
 
-  const [todoResponse, getTodos] = useResource(()=>({
+  const [todosResponse, getTodos] = useResource(()=>({
     url: "/todos",
     method:"get",
+    headers: { Authorization: `${state?.user?.access_token}` },
   }));
 
-  useEffect(getTodos, []);
+  /* useEffect(getTodos, []);
 
   useEffect(() => {
     if (todoResponse && todoResponse.data) {
       dispatch({ type: "FETCH_TODOS", todos: todoResponse.data.reverse() });
     }
-  }, [todoResponse]);
+  }, [todoResponse]); */
+
 
 
 
@@ -52,7 +53,21 @@ function App() {
   });
 
   const { user, todos } = state;
-
+ useEffect(() => {
+    getTodos();
+  }, [state?.user?.access_token]);
+  useEffect(() => {
+    if (
+      todosResponse &&
+      todosResponse.isLoading === false &&
+      todosResponse.data
+    ) {
+      dispatch({
+        type: "FETCH_TODOS",
+        posts: todosResponse.data.reverse(),
+      });
+    }
+  }, [todosResponse]);
 
   useEffect(() => {
     if (user) {
